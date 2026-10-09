@@ -1,0 +1,14 @@
+# Python environment
+.venv/
+__pycache__/
+*.pyc
+
+# Private material and local databases
+books/
+data/
+
+# API secrets
+.env
+
+# Logs
+logs/
