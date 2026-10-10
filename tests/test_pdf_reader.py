@@ -2,7 +2,7 @@
 import unittest
 import tempfile
 from pathlib import Path
-
+from unittest.mock import patch
 import pymupdf
 
 from app.ingestion.pdf_reader import read_pdf
@@ -63,6 +63,52 @@ class TestPDFReader(unittest.TestCase):
 
             with self.assertRaises(FileNotFoundError):
                 read_pdf(missing_path)
+
+    def test_ocr_fallback(self):
+        with tempfile.TemporaryDirectory() as folder:
+
+            path = Path(folder) / "scanned.pdf"
+
+            # 创建没有原生文字的 PDF
+            with pymupdf.open() as pdf:
+                pdf.new_page()
+                pdf.save(path)
+
+            # 模拟 OCR 模型返回结果
+            with patch(
+                "app.ingestion.pdf_reader.get_ocr_reader"
+            ) as mock_reader:
+
+                mock_reader.return_value.readtext.return_value = [
+                    (
+                        [[0, 0], [100, 0],
+                         [100, 30], [0, 30]],
+                        "学习力不是人人都有的",
+                        0.92
+                    )
+                ]
+
+                records = read_pdf(
+                    path,
+                    ocr_fallback=True
+                )
+
+            self.assertEqual(len(records), 1)
+
+            self.assertEqual(
+                records[0].method,
+                "ocr"
+            )
+
+            self.assertEqual(
+                records[0].location,
+                "第1页"
+            )
+
+            self.assertEqual(
+                records[0].text,
+                "学习力不是人人都有的"
+            )
 
 
 if __name__ == "__main__":

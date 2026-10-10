@@ -1,45 +1,70 @@
 
 from pathlib import Path
+
 from docx import Document
+from docx.table import Table
+from docx.text.paragraph import Paragraph
 
 from app.ingestion.schema import DocumentRecord
 
 
 def read_docx(file_path: str | Path) -> list[DocumentRecord]:
-    """读取 Word 文档的段落文字。"""
-
-    # 将输入转换为 Path 对象
     path = Path(file_path)
 
-    # 检查文件是否存在
     if not path.is_file():
         raise FileNotFoundError(
             f"Word 文件不存在: {path}"
         )
 
-    # 打开 Word 文档
     doc = Document(path)
-
-    # 保存文本记录
     records = []
 
-    # 遍历全部段落
-    for index, paragraph in enumerate(doc.paragraphs, 1):
+    paragraph_index = 0
+    table_index = 0
 
-        text = paragraph.text.strip()
+    # 按 Word 中的实际顺序遍历段落和表格
+    for block in doc.iter_inner_content():
 
-        # 跳过空段落
-        if not text:
-            continue
+        if isinstance(block, Paragraph):
+            paragraph_index += 1
+            text = block.text.strip()
 
-        # 转换成统一数据结构
-        record = DocumentRecord(
-            source=path.name,
-            location=f"第{index}段",
-            text=text,
-            method="docx_text"
-        )
+            if text:
+                records.append(
+                    DocumentRecord(
+                        source=path.name,
+                        location=f"第{paragraph_index}段",
+                        text=text,
+                        method="docx_text"
+                    )
+                )
 
-        records.append(record)
+        elif isinstance(block, Table):
+            table_index += 1
+
+            for row_index, row in enumerate(
+                block.rows, start=1
+            ):
+                cells = [
+                    cell.text.strip()
+                    for cell in row.cells
+                ]
+
+                if not any(cells):
+                    continue
+
+                text = " | ".join(cells)
+
+                records.append(
+                    DocumentRecord(
+                        source=path.name,
+                        location=(
+                            f"第{table_index}表"
+                            f"第{row_index}行"
+                        ),
+                        text=text,
+                        method="docx_text"
+                    )
+                )
 
     return records

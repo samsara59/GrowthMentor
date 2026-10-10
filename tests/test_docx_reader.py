@@ -52,6 +52,54 @@ class TestDOCXReader(unittest.TestCase):
 
             with self.assertRaises(FileNotFoundError):
                 read_docx(path)
+    
+    def test_paragraph_and_table_order(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "table_demo.docx"
+
+            doc = Document()
+
+            doc.add_paragraph("学习力的三种表现")
+
+            table = doc.add_table(rows=2, cols=2)
+            table.cell(0, 0).text = "类型"
+            table.cell(0, 1).text = "表现"
+            table.cell(1, 0).text = "行动学习者"
+            table.cell(1, 1).text = "做中学"
+
+            doc.add_paragraph("选择适合自己的学习方式")
+
+            doc.save(path)
+
+            records = read_docx(path)
+
+            self.assertEqual(len(records), 4)
+
+            self.assertEqual(
+                records[0].text,
+                "学习力的三种表现"
+            )
+
+            self.assertEqual(
+                records[1].text,
+                "类型 | 表现"
+            )
+
+            self.assertEqual(
+                records[2].text,
+                "行动学习者 | 做中学"
+            )
+
+            self.assertEqual(
+                records[2].location,
+                "第1表第2行"
+            )
+
+            self.assertEqual(
+                records[3].text,
+                "选择适合自己的学习方式"
+            )
+
 
 
 if __name__ == "__main__":
