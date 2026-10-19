@@ -1,0 +1,34 @@
+
+# GrowthMentor-Agent
+# Python 3.11
+
+# User interface
+streamlit
+
+# Agent orchestration
+langgraph
+langchain-core
+
+# Model API
+openai
+langchain-openai
+
+# Knowledge retrieval
+chromadb
+sentence-transformers
+
+# Document ingestion
+pypdf
+python-docx
+Pillow
+
+# Data
+numpy
+pandas
+pydantic
+
+# Configuration
+python-dotenv
+
+# Testing
+pytest

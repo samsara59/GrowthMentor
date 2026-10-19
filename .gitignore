@@ -1,14 +1,48 @@
-# Python environment
+
+# Local Python environment
 .venv/
 __pycache__/
 *.pyc
-
-# Private material and local databases
-books/
-data/
+.pytest_cache/
 
 # API secrets
 .env
+.streamlit/secrets.toml
 
-# Logs
+# Private user data
+data/
+books/
+*.sqlite
+*.sqlite3
+
+# Logs and checkpoints
 logs/
+checkpoints/
+
+# Local caches
+chroma_db/
+
+# Development backups
+backups/
+
+# Local environments
+.venv/
+__pycache__/
+
+# Private datasets and records
+books/
+data/
+
+# Secrets
+.env
+.streamlit/secrets.toml
+*.bak
+*.encoding_backup
+*.before_*
+*.db
+
+*.encoding_backup
+*.bak
+*.bak
+*.encoding_backup
+*.before_*
