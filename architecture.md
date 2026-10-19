@@ -1,5 +1,5 @@
 
-# GrowthMentor-Agent 架构（V2）
+# GrowthMentor-Agent 架构
 
 ## 1. 产品定义
 
