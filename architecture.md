@@ -1,5 +1,4 @@
-
-# GrowthMentor-Agent 架构（V2）
+# GrowthMentor-Agent 架构
 
 ## 1. 产品定义
 
@@ -42,6 +41,7 @@ app/programs/
 - 当前实现状态
 
 示例：
+
 - self_discovery
 - reflective_decision
 - historical_learning
@@ -71,6 +71,7 @@ app/capabilities/
 - 未来其他工具
 
 区分：
+
 1. 已声明
 2. 已绑定执行函数
 3. 已实际执行
@@ -92,6 +93,7 @@ app/knowledge/
 app/rag/
 
 负责：
+
 - 教材解析
 - 知识存储
 - 向量检索
@@ -106,6 +108,7 @@ app/assessment/
 app/memory/
 
 分别处理：
+
 - 证据与假设的核查
 - 成长任务、长期记录和状态管理
 
@@ -114,6 +117,7 @@ app/memory/
 app/ui/
 
 展示：
+
 - 自然对话
 - 成长任务
 - 导师方法
@@ -162,6 +166,7 @@ historical_learning
 原有八个app模块暂时保留。
 
 新增：
+
 - app/domain
 - app/programs
 - app/methods
