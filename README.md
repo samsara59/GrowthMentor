@@ -108,3 +108,17 @@ python -m streamlit run app/ui/streamlit_app.py
 所有成长建议应允许用户质疑、纠正和撤回。
 
 长期以实际行动反馈修正成长方向。
+
+## Brain Architecture
+
+GrowthMentor adopts a hierarchical agent architecture with message-driven communication.
+
+- **Mentor:** User-facing growth conversations.
+- **Studio:** Developer-facing execution monitoring and explanation.
+- **Executive Brain:** Supervisor coordinating specialized agents.
+- **Agent Communication:** Structured tasks, handoffs, evidence results, and reviews.
+- **Shared Services:** Memory, RAG, model providers, and trace records.
+
+The unified production orchestration is under development.
+
+[Interactive Brain Architecture](docs/brain_architecture.html)
