@@ -1,8 +1,6 @@
-"""
-GrowthMentor user entrypoint.
+﻿"""GrowthMentor user-facing entrypoint."""
 
-Run:
-    streamlit run app/ui/streamlit_app.py
-"""
+from app.ui.adaptive_mentor_app import main
 
-from app.ui.adaptive_mentor_app import *
+if __name__ == "__main__":
+    main()
